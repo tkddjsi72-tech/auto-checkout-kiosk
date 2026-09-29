@@ -1,5 +1,65 @@
 # 키오스크 상품 판별
 
+무인 키오스크 사진에서 상품 11종을 가리거나 재투입을 요구한다. 실행 진입점은 `run_identification.py`다.
+
+## 환경
+
+NVIDIA GPU가 필요하다. OCR 스크립트는 CPU용 Paddle을 감지하면 종료하고, `run_identification.py`의 바코드 검출은 CUDA로 고정되어 있다.
+
+- Python 3.10
+- CUDA 11.8용 Paddle GPU 휠 (`paddlepaddle-gpu==3.3.1`). 드라이버 535 / CUDA 12.2에서 확인했다.
+- 바코드 번호 읽기에 시스템 라이브러리 `libzbar0`가 있으면 pyzbar를 함께 쓴다.
+
+첫 실행 때 PaddleOCR 인식 모델과 YOLOv5 코드(`ultralytics/yolov5:v6.2`)를 인터넷으로 받는다. Laura 가중치는 옛 YOLOv5 체크포인트라 `ultralytics`만으로는 열리지 않을 수 있다. 그때 코드가 torch.hub로 YOLOv5를 받으며, 이 코드가 `pandas`, `seaborn`을 사용한다.
+
+## 설치
+
+```bash
+sudo apt-get install -y libzbar0
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## 실행
+
+정면 사진 11장:
+
+```bash
+python3 run_identification.py \
+  --input-dir dataset/single_front \
+  --output-dir output/full_identification
+```
+
+멀티뷰 사진 29장:
+
+```bash
+python3 run_identification.py \
+  --input-dir dataset/single_multiview \
+  --output-dir output/multiview_identification
+```
+
+결과는 각 출력 폴더의 `matching_results.json`, `matching_summary.csv`다.
+
+여러 상품이 한 트레이에 있는 경우는 `src/run_multiple_matching.py`다. 입력은 `dataset/multiple`이다. 바코드 검출과 OCR 결과 파일을 먼저 만든 뒤 `--laura-results`, `--paddle-dir`로 넘긴다. 이 스크립트는 바코드가 한 상품으로 좁혀지면 OCR 없이 무게와 비교한다.
+
+무게는 저울값이 아니다. 매니페스트의 정답 상품 기준 `공칭 + 허용×0.25`라서, 상품이 맞게 정해지면 무게 관문은 통과한다.
+
+## 폴더
+
+| 경로 | 내용 |
+|---|---|
+| `run_identification.py` | 검출, OCR 세 갈래, 판정을 순서대로 실행 |
+| `dataset/single_front` | 상품 1개, 정면 11장 |
+| `dataset/single_multiview` | 상품 1개, 윗면·아랫면·옆면 29장 |
+| `dataset/multiple` | 트레이에 상품이 여러 개인 사진 |
+| `db/products.json` | 바코드, 공칭 무게, 허용 오차 1% |
+| `db/text_front`, `db/text_multiview` | 뷰별 문구. 뷰 토큰은 합치지 않는다 |
+| `models/laura_yolov5_barcode/barcode_model.pt` | Laura YOLOv5 바코드 검출 가중치 |
+| `src/` | 검출, OCR, 판정 구현 |
+
+## 판별 규칙
+
 한 장의 키오스크 사진에서 상품을 가리거나, 다시 넣으라고 돌려보낸다. 단서는 바코드, 포장 문구(OCR), 무게 세 가지이고, 서로 독립적으로 모은 뒤 아래 규칙으로 합친다.
 
 결과는 둘 중 하나다.
@@ -11,7 +71,7 @@
 
 ## 상품 DB
 
-대상은 11종이다. 공칭 무게의 허용 오차는 **1%** (`tolerance_g = weight_g × 0.01`). 바코드·무게는 `DB/DB_WEIGHT&BARCODE/products.json`.
+대상은 11종이다. 공칭 무게의 허용 오차는 **1%** (`tolerance_g = weight_g × 0.01`). 바코드·무게는 `db/products.json`.
 
 | id | 상품 | 무게 (g) | 허용 (g) | 바코드 |
 |---|---|---:|---:|---|
@@ -29,8 +89,8 @@
 
 문구 DB는 뷰마다 따로 둔다.
 
-- 정면: `DB/DB_정면TEXT/**/*_text_set.json`
-- 멀티뷰: `DB/DB_멀티뷰TEXT/**/*_text_set.json`
+- 정면: `db/text_front/**/*_text_set.json`
+- 멀티뷰: `db/text_multiview/**/*_text_set.json`
 
 한 상품에 뷰가 여러 개여도 토큰을 한 덩어리로 합치지 않는다. 뷰마다 coverage를 구한 뒤 **그 상품의 최댓값**을 쓴다.
 
@@ -126,14 +186,4 @@ DB 토큰 하나의 credit:
 
 트레이 측정값은 담긴 상품 무게의 합으로 두기 때문에, 바코드나 OCR이 상품 하나만 가리키면 합산 무게와 어긋나 REINSERT가 된다.
 
-## 재현
-
-한 번에 돌리는 진입점은 `src/run_full_identification.py`다. Laura(conf 0.25, 긴 변 640, GPU), OCR 세 갈래, 정면+멀티뷰 문구, coverage 0.60 판정을 이 순서로 호출한다.
-
-```bash
-python3 src/run_full_identification.py \
-  --input-dir Kiosk_experiment/정면INPUT이미지 \
-  --output-dir output/full_identification
-```
-
-산출은 `output/full_identification/matching_results.json`과 `matching_summary.csv`다.
+같은 절차를 `src/run_full_identification.py`로 실행해도 `run_identification.py`와 같다.

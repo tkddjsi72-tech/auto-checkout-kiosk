@@ -1,0 +1,90 @@
+{
+  "description": "다중품목 실험 이미지",
+  "location": "Kiosk_experiment/multiple input",
+  "items": [
+    {
+      "input_image": "IMG_5213.jpg",
+      "source": "data/데이터셋/다중품목/2품목/1.후라보노, 4.마이쮸/분리/IMG_5213.jpg",
+      "count": 2,
+      "arrangement": "분리",
+      "expected_products": [
+        "후라보노",
+        "마이쮸"
+      ],
+      "path": "multiple input/IMG_5213.jpg"
+    },
+    {
+      "input_image": "IMG_5245.jpg",
+      "source": "data/데이터셋/다중품목/2품목/2.오레오, 10.콘트라베이스/분리/IMG_5245.jpg",
+      "count": 2,
+      "arrangement": "분리",
+      "expected_products": [
+        "오레오",
+        "칸타타"
+      ],
+      "path": "multiple input/IMG_5245.jpg"
+    },
+    {
+      "input_image": "IMG_5287.jpg",
+      "source": "data/데이터셋/다중품목/3품목/2.오레오, 6.신라면, 8.새우깡/접촉/IMG_5287.jpg",
+      "count": 3,
+      "arrangement": "접촉",
+      "expected_products": [
+        "오레오",
+        "신라면",
+        "새우깡"
+      ],
+      "path": "multiple input/IMG_5287.jpg"
+    },
+    {
+      "input_image": "IMG_5233.jpg",
+      "source": "data/데이터셋/다중품목/2품목/1.후라보노, 7.마이구미/접촉/IMG_5233.jpg",
+      "count": 2,
+      "arrangement": "접촉",
+      "expected_products": [
+        "후라보노",
+        "마이구미"
+      ],
+      "path": "multiple input/IMG_5233.jpg"
+    },
+    {
+      "input_image": "IMG_5365.jpg",
+      "source": "data/데이터셋/다중품목/5품목/2.오레오, 4.마이쮸, 7.마이구미, 10.콘트라베이스, 12.프링글스/접촉/IMG_5365.jpg",
+      "count": 5,
+      "arrangement": "접촉",
+      "expected_products": [
+        "오레오",
+        "마이쮸",
+        "마이구미",
+        "칸타타",
+        "프링글스"
+      ],
+      "path": "multiple input/IMG_5365.jpg"
+    },
+    {
+      "input_image": "IMG_참크래커_신라면.jpg",
+      "source": "user-attached (신라면 on CROWN/참크래커)",
+      "source_file": "c__Users_cvlab_AppData_Roaming_Cursor_User_workspaceStorage_e7e637ef86e94cffb4f80dd480f6f35b_images_20260811_131329-d2df2561-3f61-4e37-9a19-54ad9a93d10e.png",
+      "count": 2,
+      "arrangement": "적층",
+      "expected_products": [
+        "참크래커",
+        "신라면"
+      ],
+      "path": "multiple input/IMG_참크래커_신라면.jpg"
+    },
+    {
+      "input_image": "IMG_5323.jpg",
+      "source": "data/데이터셋/다중품목/4품목/2.오레오, 5.자유시간, 8.새우깡, 10.콘트라베이스/분리/IMG_5323.jpg",
+      "count": 4,
+      "arrangement": "분리",
+      "expected_products": [
+        "오레오",
+        "자유시간",
+        "새우깡",
+        "칸타타"
+      ],
+      "path": "multiple input/IMG_5323.jpg"
+    }
+  ]
+}

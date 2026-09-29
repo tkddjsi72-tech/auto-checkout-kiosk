@@ -1,0 +1,208 @@
+{
+  "items": [
+    {
+      "id": "07",
+      "expected_product": "후라보노",
+      "input_image": "IMG_5089.jpg",
+      "state": "바코드-아랫면",
+      "source": "data/데이터셋/단일품목/1. 후라보노/바코드-아랫면/IMG_5089.jpg"
+    },
+    {
+      "id": "07",
+      "expected_product": "후라보노",
+      "input_image": "IMG_5080.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/1. 후라보노/바코드-윗면/IMG_5080.jpg"
+    },
+    {
+      "id": "07",
+      "expected_product": "후라보노",
+      "input_image": "IMG_4911.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/1. 후라보노/바코드-옆면/IMG_4911.jpg"
+    },
+    {
+      "id": "04",
+      "expected_product": "오레오",
+      "input_image": "IMG_5107.jpg",
+      "state": "바코드-아랫면",
+      "source": "data/데이터셋/단일품목/2. 오레오/바코드-아랫면/IMG_5107.jpg"
+    },
+    {
+      "id": "04",
+      "expected_product": "오레오",
+      "input_image": "IMG_5095.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/2. 오레오/바코드-윗면/IMG_5095.jpg"
+    },
+    {
+      "id": "04",
+      "expected_product": "오레오",
+      "input_image": "IMG_5097.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/2. 오레오/바코드-윗면/IMG_5097.jpg"
+    },
+    {
+      "id": "04",
+      "expected_product": "오레오",
+      "input_image": "IMG_5105.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/2. 오레오/바코드-옆면/IMG_5105.jpg"
+    },
+    {
+      "id": "04",
+      "expected_product": "오레오",
+      "input_image": "IMG_5106.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/2. 오레오/바코드-옆면/IMG_5106.jpg"
+    },
+    {
+      "id": "01",
+      "expected_product": "참크래커",
+      "input_image": "IMG_5119.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-윗면/IMG_5119.jpg"
+    },
+    {
+      "id": "01",
+      "expected_product": "참크래커",
+      "input_image": "IMG_5117.jpg",
+      "state": "바코드-아랫면",
+      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-아랫면/IMG_5117.jpg"
+    },
+    {
+      "id": "01",
+      "expected_product": "참크래커",
+      "input_image": "IMG_5123.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-윗면/IMG_5123.jpg"
+    },
+    {
+      "id": "01",
+      "expected_product": "참크래커",
+      "input_image": "IMG_5122.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-윗면/IMG_5122.jpg"
+    },
+    {
+      "id": "01",
+      "expected_product": "참크래커",
+      "input_image": "IMG_5121.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-윗면/IMG_5121.jpg"
+    },
+    {
+      "id": "11",
+      "expected_product": "마이쮸",
+      "input_image": "IMG_5132.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/4. 마이쮸/바코드-옆면/IMG_5132.jpg"
+    },
+    {
+      "id": "11",
+      "expected_product": "마이쮸",
+      "input_image": "IMG_5130.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/4. 마이쮸/바코드-옆면/IMG_5130.jpg"
+    },
+    {
+      "id": "10",
+      "expected_product": "자유시간",
+      "input_image": "IMG_5133.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/5. 자유시간/바코드-윗면/IMG_5133.jpg"
+    },
+    {
+      "id": "11",
+      "expected_product": "마이쮸",
+      "input_image": "IMG_5127.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/4. 마이쮸/바코드-옆면/IMG_5127.jpg"
+    },
+    {
+      "id": "06",
+      "expected_product": "신라면",
+      "input_image": "IMG_5155.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/6. 신라면/바코드-윗면/IMG_5155.jpg"
+    },
+    {
+      "id": "08",
+      "expected_product": "마이구미",
+      "input_image": "IMG_5174.jpg",
+      "state": "바코드-아랫면",
+      "source": "data/데이터셋/단일품목/7. 마이구미/바코드-아랫면/IMG_5174.jpg"
+    },
+    {
+      "id": "02",
+      "expected_product": "새우깡",
+      "input_image": "IMG_5175.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/8.새우깡/바코드-윗면/IMG_5175.jpg"
+    },
+    {
+      "id": "03",
+      "expected_product": "칸타타",
+      "input_image": "IMG_5181.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/10. 콘트라베이스(눕힘)/바코드-옆면/IMG_5181.jpg"
+    },
+    {
+      "id": "03",
+      "expected_product": "칸타타",
+      "input_image": "IMG_5186.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/10. 콘트라베이스(눕힘)/바코드-옆면/IMG_5186.jpg"
+    },
+    {
+      "id": "03",
+      "expected_product": "칸타타",
+      "input_image": "IMG_5185.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/10. 콘트라베이스(눕힘)/바코드-옆면/IMG_5185.jpg"
+    },
+    {
+      "id": "09",
+      "expected_product": "오뚜기컵밥",
+      "input_image": "IMG_5195.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/11. 컵밥/바코드-옆면/IMG_5195.jpg"
+    },
+    {
+      "id": "09",
+      "expected_product": "오뚜기컵밥",
+      "input_image": "IMG_5196.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/11. 컵밥/바코드-옆면/IMG_5196.jpg"
+    },
+    {
+      "id": "09",
+      "expected_product": "오뚜기컵밥",
+      "input_image": "IMG_5197.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/11. 컵밥/바코드-옆면/IMG_5197.jpg"
+    },
+    {
+      "id": "09",
+      "expected_product": "오뚜기컵밥",
+      "input_image": "IMG_5198.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/11. 컵밥/바코드-옆면/IMG_5198.jpg"
+    },
+    {
+      "id": "05",
+      "expected_product": "프링글스",
+      "input_image": "IMG_5206.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/12. 프링글스(눕힘)/바코드-윗면/IMG_5206.jpg"
+    },
+    {
+      "id": "05",
+      "expected_product": "프링글스",
+      "input_image": "IMG_5211.jpg",
+      "state": "바코드-윗면",
+      "source": "data/데이터셋/단일품목/12. 프링글스(눕힘)/바코드-윗면/IMG_5211.jpg"
+    }
+  ],
+  "location": "Kiosk_experiment/멀티뷰INPUT이미지"
+}

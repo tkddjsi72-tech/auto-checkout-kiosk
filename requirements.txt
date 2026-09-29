@@ -1,9 +1,13 @@
+--extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cu118/
+paddlepaddle-gpu==3.3.1
+paddleocr
 numpy
 pillow
 opencv-python
-segment-anything
 torch
+torchvision
 tqdm
-transformers
 ultralytics
-google-cloud-vision
+pyzbar
+pandas
+seaborn

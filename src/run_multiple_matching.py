@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Multi-item cue matching for Kiosk_experiment/multiple input images.
+"""Multi-item cue matching for dataset/multiple images.
 
 Same decision algorithm as single-item kiosk policy:
 
@@ -50,10 +50,10 @@ from run_db_input_matching import (
     unique_in_order,
 )
 
-DEFAULT_INPUT_DIR = ROOT / "Kiosk_experiment" / "multiple input"
-DEFAULT_OUTPUT_DIR = ROOT / "Kiosk_experiment" / "multiple_results"
-DEFAULT_PRODUCT_DB = ROOT / "DB" / "DB_WEIGHT&BARCODE" / "products.json"
-DEFAULT_DB_TEXT_DIR = ROOT / "DB" / "DB_정면TEXT"
+DEFAULT_INPUT_DIR = ROOT / "dataset" / "multiple"
+DEFAULT_OUTPUT_DIR = ROOT / "output" / "multiple_matching"
+DEFAULT_PRODUCT_DB = ROOT / "db" / "products.json"
+DEFAULT_DB_TEXT_DIR = ROOT / "db" / "text_front"
 DEFAULT_LAURA_RESULTS = (
     ROOT / "output" / "multiple_matching" / "laura" / "results.jsonl"
 )

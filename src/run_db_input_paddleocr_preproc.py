@@ -16,7 +16,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INPUT_DIR = ROOT / "Kiosk_experiment" / "정면INPUT이미지"
+DEFAULT_INPUT_DIR = ROOT / "dataset" / "single_front"
 DEFAULT_OUTPUT_DIR = ROOT / "output" / "db_input_matching" / "paddleocr_preproc"
 SYMBOL_ONLY_RE = re.compile(r"^[\W_]+$", re.UNICODE)
 FONT_CANDIDATES = (

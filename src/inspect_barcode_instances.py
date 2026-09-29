@@ -35,18 +35,18 @@ warnings.filterwarnings(
 )
 
 
-DATASET_ROOT_DEFAULT = Path("/home/miruware/data_backup/jonghwi/kiosk/데이터셋")
-BARCODE_MODEL_DEFAULT = Path("/home/miruware/data_backup/jonghwi/kiosk/YOLOV8s_Barcode_Detection.pt")
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+DATASET_ROOT_DEFAULT = _REPO_ROOT / "dataset" / "single_front"
+BARCODE_MODEL_DEFAULT = _REPO_ROOT / "YOLOV8s_Barcode_Detection.pt"
 # Daudmax/barcode-decoder: 학습 산출 best.pt 를 아래에 두거나 --barcode-model 로 지정
 # https://github.com/Daudmax/barcode-decoder
-DAUDMAX_BARCODE_MODEL_DEFAULT = Path(
-    "/home/miruware/data_backup/jonghwi/kiosk/models/daudmax_barcode_decoder/best.pt"
+DAUDMAX_BARCODE_MODEL_DEFAULT = (
+    _REPO_ROOT / "models" / "daudmax_barcode_decoder" / "best.pt"
 )
-LAURA_YOLOV5_BARCODE_MODEL_DEFAULT = Path(
-    "/home/miruware/data_backup/jonghwi/kiosk/models/laura_yolov5_barcode/barcode_model.pt"
+LAURA_YOLOV5_BARCODE_MODEL_DEFAULT = (
+    _REPO_ROOT / "models" / "laura_yolov5_barcode" / "barcode_model.pt"
 )
-# kiosk/sam_vit_h_4b8939.pth → jonghwi/research/LOI/sam_vit_h_4b8939.pth (심볼릭 링크)
-SAM_CHECKPOINT_DEFAULT = Path("/home/miruware/data_backup/jonghwi/kiosk/sam_vit_h_4b8939.pth")
+SAM_CHECKPOINT_DEFAULT = _REPO_ROOT / "sam_vit_h_4b8939.pth"
 VIEW_NAMES = ("앞", "뒤", "좌", "우", "위", "아래")
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png"}
 

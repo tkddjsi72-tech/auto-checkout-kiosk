@@ -23,9 +23,9 @@ import cv2
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INPUT_DIR = ROOT / "Kiosk_experiment" / "정면INPUT이미지"
-DEFAULT_DB_TEXT_DIR = ROOT / "DB" / "DB_정면TEXT"
-DEFAULT_PRODUCT_DB = ROOT / "DB" / "DB_WEIGHT&BARCODE" / "products.json"
+DEFAULT_INPUT_DIR = ROOT / "dataset" / "single_front"
+DEFAULT_DB_TEXT_DIR = ROOT / "db" / "text_front"
+DEFAULT_PRODUCT_DB = ROOT / "db" / "products.json"
 DEFAULT_LAURA_RESULTS = ROOT / "output" / "db_input_matching" / "laura" / "results.jsonl"
 DEFAULT_PADDLE_DIR = ROOT / "output" / "db_input_matching" / "paddleocr"
 DEFAULT_OUTPUT_DIR = ROOT / "output" / "db_input_matching"

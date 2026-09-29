@@ -1,0 +1,9 @@
+numpy
+pillow
+opencv-python
+segment-anything
+torch
+tqdm
+transformers
+ultralytics
+google-cloud-vision

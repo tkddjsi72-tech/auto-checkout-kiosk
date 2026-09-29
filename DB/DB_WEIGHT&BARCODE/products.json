@@ -1,0 +1,85 @@
+{
+  "unit": "g",
+  "tolerance_ratio": 0.01,
+  "note": "tolerance_g = weight_g * 0.01. id aligns with DB_정면이미지/TEXT where available.",
+  "items": [
+    {
+      "id": "01",
+      "product": "참크래커",
+      "weight_g": 280,
+      "tolerance_g": 2.8,
+      "barcode": "8801111614566"
+    },
+    {
+      "id": "02",
+      "product": "새우깡",
+      "weight_g": 90,
+      "tolerance_g": 0.9,
+      "barcode": "8801043035989"
+    },
+    {
+      "id": "03",
+      "product": "칸타타",
+      "weight_g": 170,
+      "tolerance_g": 1.7,
+      "barcode": "8801056102036"
+    },
+    {
+      "id": "04",
+      "product": "오레오",
+      "weight_g": 100,
+      "tolerance_g": 1.0,
+      "barcode": "8801037088168"
+    },
+    {
+      "id": "05",
+      "product": "프링글스",
+      "weight_g": 110,
+      "tolerance_g": 1.1,
+      "barcode": "8886467100017"
+    },
+    {
+      "id": "06",
+      "product": "신라면",
+      "weight_g": 120,
+      "tolerance_g": 1.2,
+      "barcode": "8801043014809"
+    },
+    {
+      "id": "07",
+      "product": "후라보노",
+      "weight_g": 26,
+      "tolerance_g": 0.26,
+      "barcode": "8801062323159"
+    },
+    {
+      "id": "08",
+      "product": "마이구미",
+      "weight_g": 66,
+      "tolerance_g": 0.66,
+      "barcode": "8801117342104"
+    },
+    {
+      "id": "09",
+      "product": "오뚜기컵밥",
+      "alias": ["컵밥"],
+      "weight_g": 315,
+      "tolerance_g": 3.15,
+      "barcode": "8801045892238"
+    },
+    {
+      "id": "10",
+      "product": "자유시간",
+      "weight_g": 36,
+      "tolerance_g": 0.36,
+      "barcode": "8801019206818"
+    },
+    {
+      "id": "11",
+      "product": "마이쮸",
+      "weight_g": 44,
+      "tolerance_g": 0.44,
+      "barcode": "8801111187893"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+# secrets
+keys/
+
+# weights and large binaries
+*.pt
+*.pth
+*.onnx
+*.pptx
+mobile_sam.pt
+
+# datasets, experiments, generated output
+data/
+output/
+OCR_RESULTS/
+OCR_TESTDATA/
+old_results/
+experiments/
+Kiosk_experiment/
+multiview_id_results*/
+.deps/
+Depth-Anything-*/
+MessyTable/
+models/
+__pycache__/
+*.pyc
+
+# DB images and OCR dumps; keep the product catalog via explicit git add
+DB/*
+!DB/DB_WEIGHT&BARCODE/
+DB/DB_WEIGHT&BARCODE/*
+!DB/DB_WEIGHT&BARCODE/products.json

@@ -41,7 +41,15 @@ python3 run_identification.py \
 
 결과는 각 출력 폴더의 `matching_results.json`, `matching_summary.csv`다.
 
-무게는 저울값이 아니다. 매니페스트의 정답 상품 기준 `공칭 + 허용×0.25`라서, 상품이 맞게 정해지면 무게 관문은 통과한다.
+여러 상품이 한 사진에 있는 `dataset/multiple`도 같은 명령으로 돌린다.
+
+```bash
+python3 run_identification.py \
+  --input-dir dataset/multiple \
+  --output-dir output/multiple_identification
+```
+
+매니페스트의 `expected_product`나 `expected_products`는 채점용이다. 판별은 그 키 없이 사진과 DB만으로 한다. 저울값은 항목의 `measured_weight_g`다. 지금 매니페스트에는 이 값이 없으므로 무게 비교를 건너뛴다.
 
 ## 폴더
 
@@ -50,7 +58,7 @@ python3 run_identification.py \
 | `run_identification.py` | 검출, OCR 세 갈래, 판정을 순서대로 실행 |
 | `dataset/single_front` | 상품 1개, 정면 11장 |
 | `dataset/single_multiview` | 상품 1개, 윗면·아랫면·옆면 29장 |
-| `dataset/multiple` | 트레이에 상품이 여러 개인 사진 |
+| `dataset/multiple` | 한 사진에 상품이 여러 개인 입력 |
 | `db/products.json` | 바코드, 공칭 무게, 허용 오차 1% |
 | `db/text_front`, `db/text_multiview` | 뷰별 문구. 뷰 토큰은 합치지 않는다 |
 | `models/laura_yolov5_barcode/barcode_model.pt` | Laura YOLOv5 바코드 검출 가중치 |
@@ -113,8 +121,6 @@ python3 run_identification.py \
 
 디코드는 크롭을 색/회색/CLAHE/샤픈으로 만들고, 배율 1–3배, 0/90/180/270도 회전을 돌린다. 채택 조건은 EAN-13 체크섬이 맞거나, 숫자 12–14자다. 짧은 오검출은 버린다. DB에 없는 번호는 상품 매칭에 넣지 않는다.
 
-트레이 판별에서만, Laura 박스와 겹치는 OCR 숫자 상자에서 DB에 있는 바코드를 복구한다 (`apply_ocr_digit_barcode_fallback`). 상품 1장 판별에는 이 복구를 쓰지 않는다.
-
 ### OCR
 
 PaddleOCR, GPU (`paddlepaddle-gpu`, `device="gpu"`). 검출 `PP-OCRv6_medium_det`, 인식 `korean_PP-OCRv5_mobile_rec`.
@@ -129,9 +135,7 @@ PaddleOCR, GPU (`paddlepaddle-gpu`, `device="gpu"`). 검출 `PP-OCRv6_medium_det
 
 ### 무게
 
-조건은 `|측정값 − 공칭무게| ≤ tolerance_g` 이다.
-
-지금 실험 코드의 측정값은 저울 출력이 아니다. 상품 1장이면 `공칭 + 허용×0.25`라서, OCR(또는 트레이의 바코드)로 상품이 정해지면 무게 관문은 항상 통과한다. 트레이는 매니페스트에 적힌 상품들의 공칭 합에 같은 비율을 더한다. 실제 저울을 붙이면 같은 부등식을 측정값에 적용하면 된다.
+저울이 연결되면 매니페스트 항목의 `measured_weight_g`에 측정값이 들어온다. 그때 조건은 `|측정값 − 공칭무게| ≤ tolerance_g` 이다. 이 값이 없으면 무게 비교를 하지 않고, 바코드와 OCR이 상품 하나를 가리키면 CONFIRMED가 된다.
 
 ## 2. OCR coverage
 
@@ -162,7 +166,7 @@ DB 토큰 하나의 credit:
 
 상품이 매칭된 것으로 세려면 그 점수 ≥ **0.60** 이다. 0.60 이상인 상품이 정확히 하나일 때만 다음 단계로 간다. 없거나 둘 이상이면 REINSERT.
 
-## 3. 상품이 하나일 때
+## 3. 판정
 
 `src/run_db_input_matching.py`
 
@@ -170,7 +174,7 @@ DB 토큰 하나의 credit:
 2. 바코드가 하나이거나 없으면 OCR로 간다.
 3. OCR이 0.60 이상인 상품이 없거나 둘 이상 → `OCR_NO_MATCH` / `OCR_MULTIPLE` → REINSERT.
 4. OCR 상품이 하나이고, 바코드도 하나인데 서로 다르면 → `BARCODE_OCR_CONFLICT` → REINSERT.
-5. 그 OCR 상품의 무게가 허용 안이면 → **CONFIRMED**. 밖이면 → `WEIGHT_OUT_OF_TOLERANCE` → REINSERT.
+5. `measured_weight_g`가 없으면 그 상품으로 **CONFIRMED**. 있으면 `|측정 − 공칭| ≤ 공칭의 1%`일 때 CONFIRMED, 밖이면 `WEIGHT_OUT_OF_TOLERANCE` → REINSERT.
 
 바코드만 맞고 OCR이 비면 확정하지 않는다. 바코드가 한 상품을 가리키면 OCR도 그 상품이어야 한다.
 

@@ -14,10 +14,9 @@ and barcode detection in this entry point uses CUDA.
    Two or more barcode products -> REINSERT.
    Otherwise OCR must name exactly one product, and that product must agree
    with the barcode when the barcode also names one.
-   Then |measured - nominal| <= 1% of nominal -> CONFIRMED, else REINSERT.
-
-The measured weight is the simulated value inside run_db_input_matching.py:
-manifest expected product, nominal + 25% of its tolerance. It is not a live scale.
+   If the manifest item has measured_weight_g, |measured - nominal| must be
+   within 1% of nominal. If that field is absent, weight is skipped and
+   barcode+OCR confirmation stands.
 """
 
 from __future__ import annotations

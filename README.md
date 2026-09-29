@@ -49,7 +49,17 @@ python3 run_identification.py \
   --output-dir output/multiple_identification
 ```
 
-매니페스트의 `expected_product`나 `expected_products`는 채점용이다. 판별은 그 키 없이 사진과 DB만으로 한다. 저울값은 항목의 `measured_weight_g`다. 지금 매니페스트에는 이 값이 없으므로 무게 비교를 건너뛴다.
+매니페스트의 `expected_product`나 `expected_products`는 채점용이다. 판별은 그 키 없이 사진과 DB만으로 한다. 저울값은 항목의 `measured_weight_g`다. 지금 매니페스트 세 개 모두 이 값이 없으므로 무게 비교는 실행되지 않는다. 따라서 이 폴더들을 지금 상태로 돌렸을 때의 CONFIRMED는 바코드와 OCR만으로 나온 결과다.
+
+`dataset/multiple`도 같은 판정이다. 바코드와 OCR이 상품 하나만 읽으면, 저울값이 없는 동안에는 그 상품으로 CONFIRMED가 된다. 트레이 전체 무게가 `measured_weight_g`에 있으면, 그 무게가 읽힌 상품 하나의 공칭과 1% 넘게 다를 때 재투입이 된다.
+
+## 기록된 검출 수
+
+전체 판정 집계는 이 저장소에 없다. 아래 멀티뷰 숫자는 바코드 검출만 센 것이다. CONFIRMED 수가 아니다.
+
+| 입력 | 장수 | 바코드 박스 | 번호 해독 | 해독한 번호가 정답 상품 |
+|---|---:|---:|---:|---:|
+| 멀티뷰 | 29 | 15 | 10 | 9 |
 
 ## 폴더
 
@@ -117,7 +127,7 @@ python3 run_identification.py \
 - `--max-long-edge 640`
 - GPU
 
-가중치: `models/laura_yolov5_barcode/barcode_model.pt`
+가중치: `models/laura_yolov5_barcode/barcode_model.pt`. 직접 학습한 파일이 아니라 [lauraAriasFdez/barcodeDetector](https://github.com/lauraAriasFdez/barcodeDetector)의 YOLOv5 `barcode_model.pt`다. 그 저장소에는 LICENSE 파일이 없다.
 
 디코드는 크롭을 색/회색/CLAHE/샤픈으로 만들고, 배율 1–3배, 0/90/180/270도 회전을 돌린다. 채택 조건은 EAN-13 체크섬이 맞거나, 숫자 12–14자다. 짧은 오검출은 버린다. DB에 없는 번호는 상품 매칭에 넣지 않는다.
 
@@ -178,4 +188,12 @@ DB 토큰 하나의 credit:
 
 바코드만 맞고 OCR이 비면 확정하지 않는다. 바코드가 한 상품을 가리키면 OCR도 그 상품이어야 한다.
 
-같은 절차를 `src/run_full_identification.py`로 실행해도 `run_identification.py`와 같다.
+## 출처
+
+이 저장소의 코드는 [MIT](LICENSE)다. 아래 가중치와 라이브러리는 각자 라이선스를 따른다.
+
+| 구성 | 출처 | 라이선스 |
+|---|---|---|
+| 바코드 검출 가중치 | [lauraAriasFdez/barcodeDetector](https://github.com/lauraAriasFdez/barcodeDetector) `barcode_model.pt` | 원 저장소에 LICENSE 없음 |
+| 바코드 검출 코드 | [ultralytics/yolov5](https://github.com/ultralytics/yolov5) `v6.2`. 첫 실행 때 torch.hub로 받는다 | AGPL-3.0 |
+| OCR | [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR). 검출 `PP-OCRv6_medium_det`, 인식 `korean_PP-OCRv5_mobile_rec`, boost의 `PP-OCRv6_medium_rec` | Apache-2.0 |

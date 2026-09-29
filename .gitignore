@@ -7,6 +7,8 @@ keys/
 *.onnx
 *.pptx
 mobile_sam.pt
+# Published Laura checkpoint. Other *.pt files stay ignored.
+!models/laura_yolov5_barcode/barcode_model.pt
 
 # datasets, experiments, generated output
 data/
@@ -20,7 +22,10 @@ multiview_id_results*/
 .deps/
 Depth-Anything-*/
 MessyTable/
-models/
+models/*
+!models/laura_yolov5_barcode/
+models/laura_yolov5_barcode/*
+!models/laura_yolov5_barcode/barcode_model.pt
 __pycache__/
 *.pyc
 

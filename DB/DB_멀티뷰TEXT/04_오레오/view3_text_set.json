@@ -1,0 +1,32 @@
+{
+  "image": "04_오레오/view3.png",
+  "product": "오레오",
+  "view": "view3",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "NABISCO",
+    "OREO",
+    "Chocolate",
+    "Sandwich",
+    "Cookies",
+    "이미지",
+    "사진",
+    "코코아분말",
+    "4.6%",
+    "NET",
+    "WT.",
+    "100",
+    "g",
+    "[500",
+    "kcal(50",
+    "x",
+    "2packs)]",
+    "신규",
+    "알레르기",
+    "정보:",
+    "뒷면",
+    "확인"
+  ]
+}

@@ -128,37 +128,12 @@ DB 토큰 하나의 credit:
 
 ## 재현
 
-OCR과 Laura 검출은 GPU에서 돌린다.
+한 번에 돌리는 진입점은 `src/run_full_identification.py`다. Laura(conf 0.25, 긴 변 640, GPU), OCR 세 갈래, 정면+멀티뷰 문구, coverage 0.60 판정을 이 순서로 호출한다.
 
 ```bash
-# 바코드 검출
-CUDA_VISIBLE_DEVICES=0 python3 src/inspect_barcode_instances.py \
-  --dataset-root Kiosk_experiment/정면INPUT이미지 \
-  --barcode-model-family laura_yolov5 \
-  --yolo-only --conf 0.25 --yolo-imgsz 640 --max-long-edge 640 \
-  --output-dir output/db_input_matching/laura
-
-# OCR 세 갈래 (각각 GPU)
-python3 src/run_db_input_paddleocr.py \
+python3 src/run_full_identification.py \
   --input-dir Kiosk_experiment/정면INPUT이미지 \
-  --output-dir output/db_input_matching/paddleocr
-python3 src/run_db_input_paddleocr_preproc.py \
-  --input-dir Kiosk_experiment/정면INPUT이미지 \
-  --output-dir output/db_input_matching/paddleocr_preproc
-python3 src/run_db_input_paddleocr_boost.py \
-  --input-dir Kiosk_experiment/정면INPUT이미지 \
-  --output-dir output/db_input_matching/paddleocr_boost
-
-# 판별
-python3 src/run_db_input_matching.py \
-  --input-dir Kiosk_experiment/정면INPUT이미지 \
-  --laura-results output/db_input_matching/laura/results.jsonl \
-  --paddle-dir output/db_input_matching/paddleocr \
-  --paddle-dir output/db_input_matching/paddleocr_preproc \
-  --paddle-dir output/db_input_matching/paddleocr_boost \
-  --db-text-dir DB/DB_정면TEXT \
-  --db-text-dir DB/DB_멀티뷰TEXT \
-  --output-dir output/db_input_matching
+  --output-dir output/full_identification
 ```
 
-산출은 `matching_results.json`, `matching_summary.csv`다.
+산출은 `output/full_identification/matching_results.json`과 `matching_summary.csv`다.

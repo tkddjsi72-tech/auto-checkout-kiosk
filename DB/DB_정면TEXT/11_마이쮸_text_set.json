@@ -1,0 +1,29 @@
+{
+  "image": "11_마이쮸.png",
+  "product": "마이쮸",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "CROWN",
+    "캔디류",
+    "44g(182kcal)",
+    "마이쮸",
+    "포도농축과즙(고형분함량",
+    "65%",
+    "0.8%,",
+    "비타민C",
+    "60",
+    "mg/44g,",
+    "비타민D",
+    "6.6",
+    "kg/44g",
+    "CD",
+    "비타민",
+    "80",
+    "어린이",
+    "기호식품",
+    "품질인증",
+    "식품의약품안전처"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "image": "01_참크래커/view1.png",
+  "product": "참크래커",
+  "view": "view1",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "CROWN",
+    "식품안전관리인증",
+    "HACCP",
+    "식품의약품안전처",
+    "SALTINE",
+    "CRACKERS",
+    "크래커"
+  ]
+}

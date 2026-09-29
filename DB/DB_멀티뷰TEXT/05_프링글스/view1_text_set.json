@@ -1,0 +1,21 @@
+{
+  "image": "05_프링글스/view1.png",
+  "product": "프링글스",
+  "view": "view1",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "PRINGLES",
+    "ORIGINAL",
+    "K146310327",
+    "POTATO",
+    "CRISPS",
+    "제품명",
+    "프링글스",
+    "오리지날",
+    "내용량",
+    "110g",
+    "(575kcal)"
+  ]
+}

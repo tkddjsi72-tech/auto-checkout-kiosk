@@ -1,0 +1,14 @@
+{
+  "image": "01_참크래커/view3.png",
+  "product": "참크래커",
+  "view": "view3",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "CROWN",
+    "크래커",
+    "SALTINE",
+    "CRACKERS"
+  ]
+}

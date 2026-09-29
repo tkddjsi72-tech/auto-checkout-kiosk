@@ -1,0 +1,71 @@
+{
+  "items": [
+    {
+      "id": "04",
+      "expected_product": "오레오",
+      "input_image": "IMG_5101.jpg",
+      "source": "data/데이터셋/단일품목/2. 오레오/바코드-옆면/IMG_5101.jpg"
+    },
+    {
+      "id": "07",
+      "expected_product": "후라보노",
+      "input_image": "IMG_4903.jpg",
+      "source": "data/데이터셋/단일품목/1. 후라보노/바코드-옆면/IMG_4903.jpg"
+    },
+    {
+      "id": "01",
+      "expected_product": "참크래커",
+      "input_image": "IMG_5113.jpg",
+      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-아랫면/IMG_5113.jpg"
+    },
+    {
+      "id": "11",
+      "expected_product": "마이쮸",
+      "input_image": "IMG_5126.jpg",
+      "source": "data/데이터셋/단일품목/4. 마이쮸/바코드-옆면/IMG_5126.jpg"
+    },
+    {
+      "id": "10",
+      "expected_product": "자유시간",
+      "input_image": "IMG_5139.jpg",
+      "source": "data/데이터셋/단일품목/5. 자유시간/바코드-아랫면/IMG_5139.jpg"
+    },
+    {
+      "id": "06",
+      "expected_product": "신라면",
+      "input_image": "IMG_5148.jpg",
+      "source": "data/데이터셋/단일품목/6. 신라면/바코드-아랫면/IMG_5148.jpg"
+    },
+    {
+      "id": "08",
+      "expected_product": "마이구미",
+      "input_image": "IMG_5168.jpg",
+      "source": "data/데이터셋/단일품목/7. 마이구미/바코드-아랫면/IMG_5168.jpg"
+    },
+    {
+      "id": "02",
+      "expected_product": "새우깡",
+      "input_image": "IMG_5180.jpg",
+      "source": "data/데이터셋/단일품목/8.새우깡/바코드-윗면/IMG_5180.jpg"
+    },
+    {
+      "id": "03",
+      "expected_product": "칸타타",
+      "input_image": "IMG_5187.jpg",
+      "source": "data/데이터셋/단일품목/10. 콘트라베이스/바코드-옆면/IMG_5187.jpg"
+    },
+    {
+      "id": "09",
+      "expected_product": "오뚜기컵밥",
+      "input_image": "IMG_5194.jpg",
+      "source": "data/데이터셋/단일품목/11. 컵밥/바코드-옆면/IMG_5194.jpg"
+    },
+    {
+      "id": "05",
+      "expected_product": "프링글스",
+      "input_image": "IMG_5200.jpg",
+      "source": "data/데이터셋/단일품목/12. 프링글스/바코드-옆면/IMG_5200.jpg"
+    }
+  ],
+  "location": "Kiosk_experiment/정면INPUT이미지"
+}

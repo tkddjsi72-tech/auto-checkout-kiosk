@@ -1,0 +1,19 @@
+{
+  "image": "11_마이쮸/view2.png",
+  "product": "마이쮸",
+  "view": "view2",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "비닐류",
+    "OTHER",
+    "8",
+    "801111",
+    "187893\"",
+    "26.10.26까지",
+    "2",
+    "포도과즙",
+    "5.1%(생물환산시)"
+  ]
+}

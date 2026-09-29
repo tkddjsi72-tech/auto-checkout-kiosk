@@ -1,0 +1,16 @@
+{
+  "image": "04_오레오/view5.png",
+  "product": "오레오",
+  "view": "view5",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "OREO",
+    "Chocolate",
+    "Sandwich",
+    "Cookies",
+    "2027.01.04",
+    "A"
+  ]
+}

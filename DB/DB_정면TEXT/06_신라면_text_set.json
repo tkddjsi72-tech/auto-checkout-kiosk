@@ -1,0 +1,23 @@
+{
+  "image": "06_신라면.png",
+  "product": "신라면",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "인생을",
+    "맛있게",
+    "농심",
+    "40",
+    "ANNIVERSARY",
+    "인생을",
+    "울리는",
+    "매울신",
+    "라면",
+    "SHIN",
+    "RAMYUN",
+    "중량",
+    "120g(500kcal)",
+    "조리예"
+  ]
+}

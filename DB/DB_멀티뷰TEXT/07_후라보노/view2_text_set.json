@@ -1,0 +1,15 @@
+{
+  "image": "07_후라보노/view2.png",
+  "product": "후라보노",
+  "view": "view2",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "상쾌한",
+    "에티켓",
+    "FLAVONO",
+    "ORIGINAL",
+    "OPEN"
+  ]
+}

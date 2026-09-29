@@ -1,0 +1,17 @@
+{
+  "image": "01_참크래커.png",
+  "product": "참크래커",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "CROWN",
+    "이미지 예",
+    "280g",
+    "(1285kcal)",
+    "과자(유처리제품)",
+    "SALTINE",
+    "CRACKERS",
+    "크래커"
+  ]
+}

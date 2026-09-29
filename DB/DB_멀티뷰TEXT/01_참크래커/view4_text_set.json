@@ -1,0 +1,21 @@
+{
+  "image": "01_참크래커/view4.png",
+  "product": "참크래커",
+  "view": "view4",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "CROWN",
+    "2026.03.05",
+    "B3",
+    "2027.03.04",
+    "부터",
+    "까지",
+    "맛있는",
+    "약속",
+    "SALTINE",
+    "CRACKERS",
+    "크래커"
+  ]
+}

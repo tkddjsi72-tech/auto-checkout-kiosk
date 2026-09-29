@@ -1,0 +1,33 @@
+{
+  "image": "09_오뚜기컵밥.png",
+  "product": "오뚜기컵밥",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "20%",
+    "Up",
+    "오뚜기®",
+    "맛있는",
+    "오뚜기",
+    "컵밥",
+    "Ottogi",
+    "Cooked",
+    "Rice",
+    "포장이",
+    "손상되면",
+    "제품이",
+    "지성문구프라자",
+    "밥을",
+    "담아",
+    "든든하게!",
+    "밥양",
+    "150g~180g",
+    "사기존",
+    "대비",
+    "4000원",
+    "비닐류",
+    "조리예",
+    "OTHER"
+  ]
+}

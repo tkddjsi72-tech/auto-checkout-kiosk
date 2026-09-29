@@ -1,0 +1,24 @@
+{
+  "image": "07_후라보노.png",
+  "product": "후라보노",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "@LOTTE",
+    "상쾌한",
+    "에티켓",
+    "스틱껌",
+    "판매",
+    "후라보노",
+    "1명",
+    "21~23년도",
+    "CHEWING",
+    "GUM®",
+    "오리지날",
+    "26gl",
+    "닐슨",
+    "POS판매",
+    "기준"
+  ]
+}

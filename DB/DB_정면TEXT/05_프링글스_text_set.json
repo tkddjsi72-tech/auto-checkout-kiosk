@@ -1,0 +1,12 @@
+{
+  "image": "05_프링글스.png",
+  "product": "프링글스",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "PRINGLES",
+    "818",
+    "K116335150"
+  ]
+}

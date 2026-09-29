@@ -1,0 +1,10 @@
+{
+  "image": "03_칸타타.png",
+  "product": "칸타타",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "Cantata"
+  ]
+}

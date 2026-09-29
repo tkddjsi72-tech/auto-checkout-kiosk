@@ -1,0 +1,17 @@
+{
+  "image": "10_자유시간.png",
+  "product": "자유시간",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "자유시간",
+    "코코아워로",
+    "8%,",
+    "땅콩",
+    "18",
+    "%함유",
+    "초콜릿가공품,",
+    "36g(172"
+  ]
+}

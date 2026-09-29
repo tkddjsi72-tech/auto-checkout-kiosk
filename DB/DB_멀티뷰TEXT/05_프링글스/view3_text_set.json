@@ -1,0 +1,14 @@
+{
+  "image": "05_프링글스/view3.png",
+  "product": "프링글스",
+  "view": "view3",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "PRINGLES",
+    "ORIGINAL",
+    "POTATO",
+    "CRISPS"
+  ]
+}

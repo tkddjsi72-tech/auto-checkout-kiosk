@@ -1,0 +1,17 @@
+{
+  "image": "11_마이쮸/view1.png",
+  "product": "마이쮸",
+  "view": "view1",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "아동이",
+    "행복한",
+    "세상",
+    "아동권리보장원",
+    "X",
+    "바실리",
+    "칸딘스키"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "image": "02_새우깡.png",
+  "product": "새우깡",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "인생을",
+    "맛있게",
+    "농심",
+    "생새우로",
+    "만든",
+    "새우깡",
+    "튀기지",
+    "않고",
+    "구워만든",
+    "스낵",
+    "중량",
+    "90g",
+    "465kcal",
+    "생새우",
+    "8.5%",
+    "DHA",
+    "18mg"
+  ]
+}

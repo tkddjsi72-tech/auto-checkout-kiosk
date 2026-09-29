@@ -1,0 +1,15 @@
+{
+  "image": "04_오레오/view4.png",
+  "product": "오레오",
+  "view": "view4",
+  "source": "google_vision",
+  "mode": "document_text_detection",
+  "unit": "whitespace",
+  "text_set": [
+    "오레오",
+    "초콜릿샌드위치쿠키,",
+    "OPEN",
+    "화이트",
+    "크림"
+  ]
+}

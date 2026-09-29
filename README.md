@@ -41,8 +41,6 @@ python3 run_identification.py \
 
 결과는 각 출력 폴더의 `matching_results.json`, `matching_summary.csv`다.
 
-여러 상품이 한 트레이에 있는 경우는 `src/run_multiple_matching.py`다. 입력은 `dataset/multiple`이다. 바코드 검출과 OCR 결과 파일을 먼저 만든 뒤 `--laura-results`, `--paddle-dir`로 넘긴다. 이 스크립트는 바코드가 한 상품으로 좁혀지면 OCR 없이 무게와 비교한다.
-
 무게는 저울값이 아니다. 매니페스트의 정답 상품 기준 `공칭 + 허용×0.25`라서, 상품이 맞게 정해지면 무게 관문은 통과한다.
 
 ## 폴더
@@ -67,7 +65,7 @@ python3 run_identification.py \
 - **CONFIRMED** — 상품 이름이 하나 정해짐
 - **REINSERT** — 재투입. 상품을 확정하지 않음
 
-상품이 하나인 사진의 구현은 `src/run_db_input_matching.py`, 여러 상품이 한 트레이에 있는 사진의 구현은 `src/run_multiple_matching.py`다. OCR 점수 계산은 같고, 바코드가 한 상품으로 좁혀졌을 때 다음 단계가 다르다.
+판정 구현은 `src/run_db_input_matching.py`다.
 
 ## 상품 DB
 
@@ -175,15 +173,5 @@ DB 토큰 하나의 credit:
 5. 그 OCR 상품의 무게가 허용 안이면 → **CONFIRMED**. 밖이면 → `WEIGHT_OUT_OF_TOLERANCE` → REINSERT.
 
 바코드만 맞고 OCR이 비면 확정하지 않는다. 바코드가 한 상품을 가리키면 OCR도 그 상품이어야 한다.
-
-## 4. 트레이에 여러 상품이 있을 때
-
-`src/run_multiple_matching.py`
-
-1. 바코드가 DB 상품 **둘 이상** → REINSERT.
-2. 바코드가 **하나**면 OCR을 기다리지 않고 그 상품 무게와 비교한다. 허용 안이면 CONFIRMED, 밖이면 `BARCODE_WEIGHT_MISMATCH_MULTIPLE` → REINSERT.
-3. 바코드가 없으면 OCR로 간다. 0.60 이상이 없거나 둘 이상이면 REINSERT. 하나면 그 상품 무게와 비교해 통과 시 CONFIRMED, 실패 시 REINSERT.
-
-트레이 측정값은 담긴 상품 무게의 합으로 두기 때문에, 바코드나 OCR이 상품 하나만 가리키면 합산 무게와 어긋나 REINSERT가 된다.
 
 같은 절차를 `src/run_full_identification.py`로 실행해도 `run_identification.py`와 같다.

@@ -8,9 +8,9 @@ NVIDIA GPU가 필요하다. OCR 스크립트는 CPU용 Paddle을 감지하면 �
 
 - Python 3.10
 - CUDA 11.8용 Paddle GPU 휠 (`paddlepaddle-gpu==3.3.1`)
+- 바코드 번호 읽기에 시스템 라이브러리 `libzbar0`가 있으면 pyzbar를 함께 쓴다.
 
 확인한 환경은 Ubuntu 22.04.5, Python 3.10.12, 드라이버 535.309.01, CUDA 12.2, NVIDIA RTX A6000이다. PyPI 기본 torch는 이 드라이버에서 열리지 않는다. Paddle CUDA 11.8 휠과 맞추기 위해 `requirements.txt`는 `torch==2.3.1+cu118`, `torchvision==0.18.1+cu118`, `nvidia-cudnn-cu11==8.9.6.50`을 고정한다. YOLOv5 v6.2가 `pkg_resources`를 쓰므로 `setuptools<81`도 고정한다.
-- 바코드 번호 읽기에 시스템 라이브러리 `libzbar0`가 있으면 pyzbar를 함께 쓴다.
 
 첫 실행 때 PaddleOCR 인식 모델과 YOLOv5 코드(`ultralytics/yolov5:v6.2`)를 인터넷으로 받는다. Laura 가중치는 옛 YOLOv5 체크포인트라 `ultralytics`만으로는 열리지 않을 수 있다. 그때 코드가 torch.hub로 YOLOv5를 받으며, 이 코드가 `pandas`, `seaborn`을 사용한다.
 
@@ -218,10 +218,10 @@ DB 토큰 하나의 credit:
 
 ## 출처
 
-이 저장소의 코드는 [MIT](LICENSE)다. 아래 가중치와 라이브러리는 각자 라이선스를 따른다.
+[MIT](LICENSE)는 이 저장소의 코드에만 적용된다. `barcode_model.pt`와 `dataset/`의 상품 사진에는 적용되지 않는다. 사진에는 제품 로고와 포장 디자인이 들어 있다. 아래 가중치와 라이브러리는 각자 라이선스를 따른다.
 
 | 구성 | 출처 | 라이선스 |
 |---|---|---|
-| 바코드 검출 가중치 | [lauraAriasFdez/barcodeDetector](https://github.com/lauraAriasFdez/barcodeDetector) `barcode_model.pt` | 원 저장소에 LICENSE 없음 |
-| 바코드 검출 코드 | [ultralytics/yolov5](https://github.com/ultralytics/yolov5) `v6.2`. 첫 실행 때 torch.hub로 받는다 | AGPL-3.0 |
+| 바코드 검출 가중치 | [lauraAriasFdez/barcodeDetector](https://github.com/lauraAriasFdez/barcodeDetector) `barcode_model.pt`. 그 저장소는 현재 열리지 않고, 재배포 허락은 없다 | 원 저장소에 LICENSE 없음 |
+| 바코드 검출 코드 | [ultralytics/yolov5](https://github.com/ultralytics/yolov5) `v6.2`. 첫 실행 때 torch.hub로 받는다. 이 저장소는 그 소스를 포함하지 않는다 | GPL-3.0 |
 | OCR | [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR). 검출 `PP-OCRv6_medium_det`, 인식 `korean_PP-OCRv5_mobile_rec`, boost의 `PP-OCRv6_medium_rec` | Apache-2.0 |

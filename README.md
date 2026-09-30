@@ -7,7 +7,9 @@
 NVIDIA GPU가 필요하다. OCR 스크립트는 CPU용 Paddle을 감지하면 종료하고, `run_identification.py`의 바코드 검출은 CUDA로 고정되어 있다.
 
 - Python 3.10
-- CUDA 11.8용 Paddle GPU 휠 (`paddlepaddle-gpu==3.3.1`). 드라이버 535 / CUDA 12.2에서 확인했다.
+- CUDA 11.8용 Paddle GPU 휠 (`paddlepaddle-gpu==3.3.1`)
+
+확인한 환경은 Ubuntu 22.04.5, Python 3.10.12, 드라이버 535.309.01, CUDA 12.2, NVIDIA RTX A6000이다. PyPI 기본 torch는 이 드라이버에서 열리지 않는다. Paddle CUDA 11.8 휠과 맞추기 위해 `requirements.txt`는 `torch==2.3.1+cu118`, `torchvision==0.18.1+cu118`, `nvidia-cudnn-cu11==8.9.6.50`을 고정한다. YOLOv5 v6.2가 `pkg_resources`를 쓰므로 `setuptools<81`도 고정한다.
 - 바코드 번호 읽기에 시스템 라이브러리 `libzbar0`가 있으면 pyzbar를 함께 쓴다.
 
 첫 실행 때 PaddleOCR 인식 모델과 YOLOv5 코드(`ultralytics/yolov5:v6.2`)를 인터넷으로 받는다. Laura 가중치는 옛 YOLOv5 체크포인트라 `ultralytics`만으로는 열리지 않을 수 있다. 그때 코드가 torch.hub로 YOLOv5를 받으며, 이 코드가 `pandas`, `seaborn`을 사용한다.
@@ -53,13 +55,38 @@ python3 run_identification.py \
 
 `dataset/multiple`도 같은 판정이다. 바코드와 OCR이 상품 하나만 읽으면, 저울값이 없는 동안에는 그 상품으로 CONFIRMED가 된다. 트레이 전체 무게가 `measured_weight_g`에 있으면, 그 무게가 읽힌 상품 하나의 공칭과 1% 넘게 다를 때 재투입이 된다.
 
-## 기록된 검출 수
+코드는 저울 장치를 읽지 않는다. 측정값은 매니페스트 항목의 `measured_weight_g`로 들어온다. `db/products.json`의 `weight_g`는 포장지에 적힌 내용량이다. 실제 저울은 포장을 포함한 총중량을 재므로, 저울을 붙일 때는 그 총중량을 `measured_weight_g`에 넣는다.
 
-전체 판정 집계는 이 저장소에 없다. 아래 멀티뷰 숫자는 바코드 검출만 센 것이다. CONFIRMED 수가 아니다.
+다른 사진 한 장을 보려면 폴더에 이미지와 `manifest.json`을 둔다. `expected_product`는 채점용이라 없어도 판별된다.
 
-| 입력 | 장수 | 바코드 박스 | 번호 해독 | 해독한 번호가 정답 상품 |
+```text
+dataset/custom/test.jpg
+dataset/custom/manifest.json
+```
+
+```json
+{ "items": [ { "input_image": "test.jpg" } ] }
+```
+
+```bash
+python3 run_identification.py \
+  --input-dir dataset/custom \
+  --output-dir output/custom
+```
+
+## 기록된 판정
+
+아래는 위 환경에서 세 폴더를 끝까지 돌린 결과다. 매니페스트에 `measured_weight_g`가 없어 무게 비교는 하지 않았다. 맞는 확정은 `final_product`가 `expected_product`와 같은 경우다. 원본은 `expected_results/`의 `matching_summary.csv`다.
+
+| 입력 | 장수 | CONFIRMED | 재투입 | 정답 일치 |
 |---|---:|---:|---:|---:|
-| 멀티뷰 | 29 | 15 | 10 | 9 |
+| 정면 | 11 | 11 | 0 | 11 |
+| 멀티뷰 | 29 | 16 | 13 | 16 |
+| 여러 상품 | 7 | 2 | 5 | — |
+
+확정된 상품이 정답과 다른 경우는 없다. 여러 상품은 `expected_products` 목록이라 정답 일치를 매기지 않았다. 그 2장의 CONFIRMED는 저울값 없이 상품 하나만 읽힌 경우다.
+
+같은 실행의 바코드는 정면 박스 3장·번호 해독 0장, 멀티뷰 박스 15장·번호 해독 10장·해독 번호가 정답 상품 9장, 여러 상품 박스 5장·번호 해독 3장이다. 정면 11장의 CONFIRMED는 OCR만으로 나왔다.
 
 ## 폴더
 
@@ -72,6 +99,7 @@ python3 run_identification.py \
 | `db/products.json` | 바코드, 공칭 무게, 허용 오차 1% |
 | `db/text_front`, `db/text_multiview` | 뷰별 문구. 뷰 토큰은 합치지 않는다 |
 | `models/laura_yolov5_barcode/barcode_model.pt` | Laura YOLOv5 바코드 검출 가중치 |
+| `expected_results/` | 위 판정의 `matching_summary.csv` |
 | `src/` | 검출, OCR, 판정 구현 |
 
 ## 판별 규칙
@@ -145,7 +173,7 @@ PaddleOCR, GPU (`paddlepaddle-gpu`, `device="gpu"`). 검출 `PP-OCRv6_medium_det
 
 ### 무게
 
-저울이 연결되면 매니페스트 항목의 `measured_weight_g`에 측정값이 들어온다. 그때 조건은 `|측정값 − 공칭무게| ≤ tolerance_g` 이다. 이 값이 없으면 무게 비교를 하지 않고, 바코드와 OCR이 상품 하나를 가리키면 CONFIRMED가 된다.
+저울 장치를 읽는 코드는 없다. 측정값은 매니페스트 항목의 `measured_weight_g`로 넣는다. 그 값이 있으면 `|측정값 − 공칭무게| ≤ tolerance_g` 이다. 없으면 무게 비교를 하지 않고, 바코드와 OCR이 상품 하나를 가리키면 CONFIRMED가 된다. 공칭무게 `weight_g`는 포장지 내용량이다. 저울의 총중량을 넣을 때는 포장 무게가 1% 허용 안에 드는지도 본다.
 
 ## 2. OCR coverage
 

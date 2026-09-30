@@ -1,11 +1,15 @@
 --extra-index-url https://www.paddlepaddle.org.cn/packages/stable/cu118/
+--extra-index-url https://download.pytorch.org/whl/cu118
 paddlepaddle-gpu==3.3.1
 paddleocr
 numpy
 pillow
 opencv-python
-torch
-torchvision
+torch==2.3.1+cu118
+torchvision==0.18.1+cu118
+nvidia-cudnn-cu11==8.9.6.50
+nvidia-nccl-cu11==2.19.3
+setuptools<81
 tqdm
 ultralytics
 pyzbar

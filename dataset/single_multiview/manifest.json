@@ -84,8 +84,8 @@
       "id": "01",
       "expected_product": "참크래커",
       "input_image": "IMG_5123.jpg",
-      "state": "바코드-뒷면",
-      "source": "DB/DB_멀티뷰이미지/01_참크래커/view5.png",
+      "state": "바코드-옆면",
+      "source": "DB/DB_멀티뷰이미지/01_참크래커/view3.png",
       "measured_weight_g": 280
     },
     {

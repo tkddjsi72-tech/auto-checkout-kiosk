@@ -84,16 +84,16 @@
       "id": "01",
       "expected_product": "참크래커",
       "input_image": "IMG_5123.jpg",
-      "state": "바코드-윗면",
-      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-윗면/IMG_5123.jpg",
+      "state": "바코드-뒷면",
+      "source": "DB/DB_멀티뷰이미지/01_참크래커/view5.png",
       "measured_weight_g": 280
     },
     {
       "id": "01",
       "expected_product": "참크래커",
       "input_image": "IMG_5122.jpg",
-      "state": "바코드-윗면",
-      "source": "data/데이터셋/단일품목/3. 참크래커/바코드-윗면/IMG_5122.jpg",
+      "state": "바코드-옆면",
+      "source": "DB/DB_멀티뷰이미지/01_참크래커/view2.png",
       "measured_weight_g": 280
     },
     {
@@ -117,7 +117,7 @@
       "expected_product": "마이쮸",
       "input_image": "IMG_5130.jpg",
       "state": "바코드-옆면",
-      "source": "data/데이터셋/단일품목/4. 마이쮸/바코드-옆면/IMG_5130.jpg",
+      "source": "DB/DB_멀티뷰이미지/11_마이쮸/view1.png",
       "measured_weight_g": 44
     },
     {

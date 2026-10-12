@@ -11,7 +11,18 @@
         "후라보노",
         "마이쮸"
       ],
-      "path": "multiple input/IMG_5213.jpg"
+      "path": "multiple input/IMG_5213.jpg",
+      "measured_weights_g": [
+        {
+          "product": "후라보노",
+          "weight_g": 26
+        },
+        {
+          "product": "마이쮸",
+          "weight_g": 44
+        }
+      ],
+      "measured_weight_g": 70
     },
     {
       "input_image": "IMG_5245.jpg",
@@ -22,7 +33,18 @@
         "오레오",
         "칸타타"
       ],
-      "path": "multiple input/IMG_5245.jpg"
+      "path": "multiple input/IMG_5245.jpg",
+      "measured_weights_g": [
+        {
+          "product": "오레오",
+          "weight_g": 100
+        },
+        {
+          "product": "칸타타",
+          "weight_g": 170
+        }
+      ],
+      "measured_weight_g": 270
     },
     {
       "input_image": "IMG_5287.jpg",
@@ -34,7 +56,22 @@
         "신라면",
         "새우깡"
       ],
-      "path": "multiple input/IMG_5287.jpg"
+      "path": "multiple input/IMG_5287.jpg",
+      "measured_weights_g": [
+        {
+          "product": "오레오",
+          "weight_g": 100
+        },
+        {
+          "product": "신라면",
+          "weight_g": 120
+        },
+        {
+          "product": "새우깡",
+          "weight_g": 90
+        }
+      ],
+      "measured_weight_g": 310
     },
     {
       "input_image": "IMG_5233.jpg",
@@ -45,7 +82,18 @@
         "후라보노",
         "마이구미"
       ],
-      "path": "multiple input/IMG_5233.jpg"
+      "path": "multiple input/IMG_5233.jpg",
+      "measured_weights_g": [
+        {
+          "product": "후라보노",
+          "weight_g": 26
+        },
+        {
+          "product": "마이구미",
+          "weight_g": 66
+        }
+      ],
+      "measured_weight_g": 92
     },
     {
       "input_image": "IMG_5365.jpg",
@@ -59,7 +107,30 @@
         "칸타타",
         "프링글스"
       ],
-      "path": "multiple input/IMG_5365.jpg"
+      "path": "multiple input/IMG_5365.jpg",
+      "measured_weights_g": [
+        {
+          "product": "오레오",
+          "weight_g": 100
+        },
+        {
+          "product": "마이쮸",
+          "weight_g": 44
+        },
+        {
+          "product": "마이구미",
+          "weight_g": 66
+        },
+        {
+          "product": "칸타타",
+          "weight_g": 170
+        },
+        {
+          "product": "프링글스",
+          "weight_g": 110
+        }
+      ],
+      "measured_weight_g": 490
     },
     {
       "input_image": "IMG_참크래커_신라면.jpg",
@@ -71,7 +142,18 @@
         "참크래커",
         "신라면"
       ],
-      "path": "multiple input/IMG_참크래커_신라면.jpg"
+      "path": "multiple input/IMG_참크래커_신라면.jpg",
+      "measured_weights_g": [
+        {
+          "product": "참크래커",
+          "weight_g": 280
+        },
+        {
+          "product": "신라면",
+          "weight_g": 120
+        }
+      ],
+      "measured_weight_g": 400
     },
     {
       "input_image": "IMG_5323.jpg",
@@ -84,7 +166,26 @@
         "새우깡",
         "칸타타"
       ],
-      "path": "multiple input/IMG_5323.jpg"
+      "path": "multiple input/IMG_5323.jpg",
+      "measured_weights_g": [
+        {
+          "product": "오레오",
+          "weight_g": 100
+        },
+        {
+          "product": "자유시간",
+          "weight_g": 36
+        },
+        {
+          "product": "새우깡",
+          "weight_g": 90
+        },
+        {
+          "product": "칸타타",
+          "weight_g": 170
+        }
+      ],
+      "measured_weight_g": 396
     }
   ]
 }

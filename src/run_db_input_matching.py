@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Combine Laura barcode, PaddleOCR, and an optional scale reading.
+"""Combine Laura barcode, PaddleOCR, and a scale reading.
 
 Decision policy:
   1. Laura barcode detection and PaddleOCR are independent of the manifest label.
-  2. Multiple barcode DB matches -> REINSERT. Single/no barcode match -> OCR.
-  3. OCR must match exactly one DB product. If barcode matched, OCR must agree.
-  4. A scale reading is optional. When measured_weight_g is present, it must be
-     inside that OCR product's tolerance. When it is absent, weight is skipped
-     and barcode+OCR confirmation stands.
+  2. Undecoded Laura boxes can take a DB barcode from overlapping OCR digits.
+  3. Two or more barcode products -> REINSERT.
+  4. One barcode product -> weight check against that product. OCR is ignored.
+  5. No barcode product -> OCR. Zero or two-plus OCR products -> REINSERT.
+     Exactly one OCR product -> weight check against that product.
+  6. Weight passes when |measured_weight_g - nominal| is within 1% of nominal.
+     A missing scale reading does not confirm.
 """
 
 from __future__ import annotations
@@ -655,6 +657,45 @@ def status_for_count(count: int) -> str:
     return "MULTIPLE"
 
 
+def decide_weight(
+    product_name: str,
+    measured_weight: float | None,
+    product_by_name: dict[str, dict[str, Any]],
+    weight_result: dict[str, Any],
+) -> tuple[str, str, str | None, str]:
+    """Return action, status, confirmed product, and the stage-4 detail."""
+    if measured_weight is None:
+        return "REINSERT", "WEIGHT_MISSING", None, "저울값 없음; 재투입 요구"
+    matched_product = product_by_name.get(product_name)
+    if matched_product is None:
+        return "REINSERT", "WEIGHT_DB_MISSING", None, f"{product_name} weight DB 없음; 재투입 요구"
+    nominal = float(matched_product["weight_g"])
+    tolerance = float(matched_product["tolerance_g"])
+    difference = abs(measured_weight - nominal)
+    passed = difference <= tolerance + 1e-9
+    weight_result.update(
+        {
+            "evaluated": True,
+            "matched_product": product_name,
+            "nominal_g": nominal,
+            "tolerance_g": tolerance,
+            "difference_g": round(difference, 4),
+            "passed": passed,
+        }
+    )
+    if passed:
+        detail = (
+            f"|{measured_weight:.2f}-{nominal:g}|="
+            f"{difference:.2f}g <= {tolerance:g}g; {product_name} 확정"
+        )
+        return "CONFIRMED", "CONFIRMED", product_name, detail
+    detail = (
+        f"|{measured_weight:.2f}-{nominal:g}|="
+        f"{difference:.2f}g > {tolerance:g}g; 재투입 요구"
+    )
+    return "REINSERT", "WEIGHT_OUT_OF_TOLERANCE", None, detail
+
+
 def load_paddle_result(paddle_dir: Path, image_stem: str) -> dict[str, Any]:
     path = paddle_dir / f"{image_stem}_res.json"
     payload = read_json(path)
@@ -762,21 +803,6 @@ def main() -> int:
             raw_detections,
             output_dir / "barcode_crops",
         )
-        decoded_codes = unique_in_order(
-            [
-                decoded["code"]
-                for detection in decoded_detections
-                for decoded in detection.get("decoded", [])
-            ]
-        )
-        barcode_matches = unique_in_order(
-            [
-                product
-                for code in decoded_codes
-                for product in barcode_to_products.get(code, [])
-            ]
-        )
-        barcode_status = status_for_count(len(barcode_matches))
 
         image_stem = Path(image_name).stem
         paddle_sources = [path.resolve() for path in args.paddle_dir]
@@ -831,6 +857,28 @@ def main() -> int:
             if candidate["coverage"] >= args.coverage_threshold
         ]
         ocr_status = status_for_count(len(ocr_matches))
+        recovered_from_ocr: list[dict[str, str]] = []
+        if raw_detections:
+            recovered_from_ocr = apply_ocr_digit_barcode_fallback(
+                decoded_detections,
+                collect_ocr_text_boxes(paddle_payloads),
+                set(barcode_to_products),
+            )
+        decoded_codes = unique_in_order(
+            [
+                decoded["code"]
+                for detection in decoded_detections
+                for decoded in detection.get("decoded", [])
+            ]
+        )
+        barcode_matches = unique_in_order(
+            [
+                product
+                for code in decoded_codes
+                for product in barcode_to_products.get(code, [])
+            ]
+        )
+        barcode_status = status_for_count(len(barcode_matches))
         source_detail = ", ".join(
             f"{summary['source']} top={summary['top_product']}({summary['top_coverage']:.3f})"
             for summary in source_summaries
@@ -857,6 +905,25 @@ def main() -> int:
             "evaluated": False,
         }
 
+        def finish_with_weight(product_name: str) -> None:
+            nonlocal final_action, final_status, final_product
+            action, status, confirmed, detail = decide_weight(
+                product_name,
+                measured_weight,
+                product_by_name,
+                weight_result,
+            )
+            final_action = action
+            final_status = status
+            final_product = confirmed
+            flow.append(
+                {
+                    "stage": 4,
+                    "status": "PASS" if status == "CONFIRMED" else "FAIL",
+                    "detail": detail,
+                }
+            )
+
         if barcode_status == "MULTIPLE":
             final_status = "BARCODE_MULTIPLE"
             flow.append(
@@ -866,18 +933,27 @@ def main() -> int:
                     "detail": f"Barcode DB matches={barcode_matches}; 재투입 요구",
                 }
             )
+        elif barcode_status == "SINGLE":
+            barcode_product = barcode_matches[0]
+            flow.append(
+                {
+                    "stage": 2,
+                    "status": "SINGLE",
+                    "detail": (
+                        f"Barcode DB match={barcode_product}; "
+                        "OCR과 무관하게 무게 비교"
+                    ),
+                }
+            )
+            finish_with_weight(barcode_product)
         else:
             flow.append(
                 {
                     "stage": 2,
-                    "status": barcode_status,
-                    "detail": (
-                        f"Barcode DB matches={barcode_matches or '없음'}; "
-                        "OCR matching으로 진행"
-                    ),
+                    "status": "NO_MATCH",
+                    "detail": "Barcode DB match 없음; OCR matching으로 진행",
                 }
             )
-
             if ocr_status == "MULTIPLE":
                 final_status = "OCR_MULTIPLE"
                 flow.append(
@@ -898,84 +974,14 @@ def main() -> int:
                 )
             else:
                 ocr_product = ocr_matches[0]
-                if barcode_status == "SINGLE" and barcode_matches[0] != ocr_product:
-                    final_status = "BARCODE_OCR_CONFLICT"
-                    flow.append(
-                        {
-                            "stage": 3,
-                            "status": "CONFLICT",
-                            "detail": (
-                                f"Barcode={barcode_matches[0]}, OCR={ocr_product}; "
-                                "재투입 요구"
-                            ),
-                        }
-                    )
-                else:
-                    flow.append(
-                        {
-                            "stage": 3,
-                            "status": "SINGLE",
-                            "detail": f"OCR DB match={ocr_product}",
-                        }
-                    )
-                    if measured_weight is None:
-                        final_action = "CONFIRMED"
-                        final_status = "CONFIRMED"
-                        final_product = ocr_product
-                        flow.append(
-                            {
-                                "stage": 4,
-                                "status": "SKIPPED",
-                                "detail": f"저울값 없음; {ocr_product} 확정",
-                            }
-                        )
-                    else:
-                        matched_product = product_by_name.get(ocr_product)
-                        if matched_product is None:
-                            final_status = "WEIGHT_DB_MISSING"
-                            flow.append(
-                                {
-                                    "stage": 4,
-                                    "status": "NO_MATCH",
-                                    "detail": f"{ocr_product} weight DB 없음; 재투입 요구",
-                                }
-                            )
-                        else:
-                            nominal = float(matched_product["weight_g"])
-                            tolerance = float(matched_product["tolerance_g"])
-                            difference = abs(measured_weight - nominal)
-                            passed = difference <= tolerance + 1e-9
-                            weight_result.update(
-                                {
-                                    "evaluated": True,
-                                    "matched_product": ocr_product,
-                                    "nominal_g": nominal,
-                                    "tolerance_g": tolerance,
-                                    "difference_g": round(difference, 4),
-                                    "passed": passed,
-                                }
-                            )
-                            if passed:
-                                final_action = "CONFIRMED"
-                                final_status = "CONFIRMED"
-                                final_product = ocr_product
-                                detail = (
-                                    f"|{measured_weight:.2f}-{nominal:g}|="
-                                    f"{difference:.2f}g <= {tolerance:g}g; {ocr_product} 확정"
-                                )
-                            else:
-                                final_status = "WEIGHT_OUT_OF_TOLERANCE"
-                                detail = (
-                                    f"|{measured_weight:.2f}-{nominal:g}|="
-                                    f"{difference:.2f}g > {tolerance:g}g; 재투입 요구"
-                                )
-                            flow.append(
-                                {
-                                    "stage": 4,
-                                    "status": "PASS" if passed else "FAIL",
-                                    "detail": detail,
-                                }
-                            )
+                flow.append(
+                    {
+                        "stage": 3,
+                        "status": "SINGLE",
+                        "detail": f"OCR DB match={ocr_product}; 무게 비교",
+                    }
+                )
+                finish_with_weight(ocr_product)
 
         result = {
             "input_image": image_name,
@@ -990,6 +996,7 @@ def main() -> int:
                 "decoded_codes": decoded_codes,
                 "db_matches": barcode_matches,
                 "status": barcode_status,
+                "ocr_digit_fallback": recovered_from_ocr,
             },
             "ocr": {
                 "engine": paddle.get("model", {}),
@@ -1035,7 +1042,8 @@ def main() -> int:
             "ocr_sources": [str(path.resolve()) for path in args.paddle_dir],
             "ocr_element_fuzzy_threshold": args.element_threshold,
             "ocr_product_coverage_threshold": args.coverage_threshold,
-            "weight_source": "manifest measured_weight_g, skipped when absent",
+            "weight_source": "manifest measured_weight_g; required to confirm",
+            "ocr_digit_fallback": "undecoded Laura box + overlapping OCR digits in the product DB",
         },
         "summary": {
             "image_count": len(results),

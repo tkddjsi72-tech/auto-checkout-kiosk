@@ -12,11 +12,11 @@ and barcode detection in this entry point uses CUDA.
    Coverage is the max over views. OCR score is the max over the three reads.
    A product matches at coverage >= 0.60.
    Two or more barcode products -> REINSERT.
-   Otherwise OCR must name exactly one product, and that product must agree
-   with the barcode when the barcode also names one.
-   If the manifest item has measured_weight_g, |measured - nominal| must be
-   within 1% of nominal. If that field is absent, weight is skipped and
-   barcode+OCR confirmation stands.
+   One barcode product confirms when measured_weight_g is within 1% of that
+   product's nominal weight. OCR does not change that decision.
+   No barcode product uses OCR. OCR must name exactly one product, and that
+   product's weight must pass the same 1% check.
+   Undecoded barcode boxes can recover a DB code from overlapping OCR digits.
 """
 
 from __future__ import annotations

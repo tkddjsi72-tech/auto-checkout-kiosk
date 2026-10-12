@@ -51,11 +51,7 @@ python3 run_identification.py \
   --output-dir output/multiple_identification
 ```
 
-매니페스트의 `expected_product`나 `expected_products`는 채점용이다. 판별은 그 키 없이 사진과 DB만으로 한다. 저울값은 항목의 `measured_weight_g`다. 지금 매니페스트 세 개 모두 이 값이 없으므로 무게 비교는 실행되지 않는다. 따라서 이 폴더들을 지금 상태로 돌렸을 때의 CONFIRMED는 바코드와 OCR만으로 나온 결과다.
-
-`dataset/multiple`도 같은 판정이다. 바코드와 OCR이 상품 하나만 읽으면, 저울값이 없는 동안에는 그 상품으로 CONFIRMED가 된다. 트레이 전체 무게가 `measured_weight_g`에 있으면, 그 무게가 읽힌 상품 하나의 공칭과 1% 넘게 다를 때 재투입이 된다.
-
-코드는 저울 장치를 읽지 않는다. 측정값은 매니페스트 항목의 `measured_weight_g`로 들어온다. `db/products.json`의 `weight_g`는 포장지에 적힌 내용량이다. 실제 저울은 포장을 포함한 총중량을 재므로, 저울을 붙일 때는 그 총중량을 `measured_weight_g`에 넣는다.
+매니페스트의 `expected_product`나 `expected_products`는 채점용이다. 판별은 그 키 없이 사진과 DB만으로 한다. 저울값은 항목의 `measured_weight_g`다. 코드는 저울 장치를 읽지 않는다. 지금 단일 상품 매니페스트에는 그 상품의 DB 내용량을, 여러 상품 매니페스트에는 그 상품들 내용량의 합을 넣어 두었다. `measured_weights_g`는 여러 상품일 때 상품별 무게다. 실제 저울을 붙이면 그 총중량으로 바꾼다. `weight_g`는 포장지 내용량이라, 포장 무게가 1%를 넘으면 맞는 상품도 재투입될 수 있다.
 
 다른 사진 한 장을 보려면 폴더에 이미지와 `manifest.json`을 둔다. `expected_product`는 채점용이라 없어도 판별된다.
 
@@ -76,17 +72,15 @@ python3 run_identification.py \
 
 ## 기록된 판정
 
-아래는 위 환경에서 세 폴더를 끝까지 돌린 결과다. 매니페스트에 `measured_weight_g`가 없어 무게 비교는 하지 않았다. 맞는 확정은 `final_product`가 `expected_product`와 같은 경우다. 원본은 `expected_results/`의 `matching_summary.csv`다.
+아래는 바코드가 하나면 그 상품의 무게로 확정하고, 바코드가 없으면 OCR 하나와 무게로 확정하는 규칙으로 다시 돌린 결과다. 단일 상품의 `measured_weight_g`는 그 상품의 DB 내용량이고, 여러 상품은 그 상품들 내용량의 합이다. 맞는 확정은 `final_product`가 `expected_product`와 같은 경우다. 원본은 `expected_results/`의 `matching_summary.csv`다.
 
 | 입력 | 장수 | CONFIRMED | 재투입 | 정답 일치 |
 |---|---:|---:|---:|---:|
 | 정면 | 11 | 11 | 0 | 11 |
-| 멀티뷰 | 29 | 16 | 13 | 16 |
-| 여러 상품 | 7 | 2 | 5 | — |
+| 멀티뷰 | 29 | 19 | 10 | 19 |
+| 여러 상품 | 7 | 0 | 7 | — |
 
-확정된 상품이 정답과 다른 경우는 없다. 여러 상품은 `expected_products` 목록이라 정답 일치를 매기지 않았다. 그 2장의 CONFIRMED는 저울값 없이 상품 하나만 읽힌 경우다.
-
-같은 실행의 바코드는 정면 박스 3장·번호 해독 0장, 멀티뷰 박스 15장·번호 해독 10장·해독 번호가 정답 상품 9장, 여러 상품 박스 5장·번호 해독 3장이다. 정면 11장의 CONFIRMED는 OCR만으로 나왔다.
+확정된 상품이 정답과 다른 경우는 없다. 멀티뷰 재투입 10장은 바코드가 없고 OCR도 0.60을 넘지 못했다. 여러 상품은 바코드가 둘 이상이거나, 하나만 읽혀도 합산 무게가 그 상품과 달라 재투입이다. 정답 일치는 `expected_products` 목록이라 매기지 않았다.
 
 ## 폴더
 
@@ -159,6 +153,8 @@ python3 run_identification.py \
 
 디코드는 크롭을 색/회색/CLAHE/샤픈으로 만들고, 배율 1–3배, 0/90/180/270도 회전을 돌린다. 채택 조건은 EAN-13 체크섬이 맞거나, 숫자 12–14자다. 짧은 오검출은 버린다. DB에 없는 번호는 상품 매칭에 넣지 않는다.
 
+박스의 번호를 못 읽으면, 그 박스와 겹치는 OCR 글자에서 DB에 있는 바코드 숫자를 찾아 넣는다. 겹치는 OCR 숫자가 없거나 DB에 없는 번호면 복구하지 않는다.
+
 ### OCR
 
 PaddleOCR, GPU (`paddlepaddle-gpu`, `device="gpu"`). 검출 `PP-OCRv6_medium_det`, 인식 `korean_PP-OCRv5_mobile_rec`.
@@ -173,7 +169,7 @@ PaddleOCR, GPU (`paddlepaddle-gpu`, `device="gpu"`). 검출 `PP-OCRv6_medium_det
 
 ### 무게
 
-저울 장치를 읽는 코드는 없다. 측정값은 매니페스트 항목의 `measured_weight_g`로 넣는다. 그 값이 있으면 `|측정값 − 공칭무게| ≤ tolerance_g` 이다. 없으면 무게 비교를 하지 않고, 바코드와 OCR이 상품 하나를 가리키면 CONFIRMED가 된다. 공칭무게 `weight_g`는 포장지 내용량이다. 저울의 총중량을 넣을 때는 포장 무게가 1% 허용 안에 드는지도 본다.
+저울 장치를 읽는 코드는 없다. 측정값은 매니페스트 항목의 `measured_weight_g`로 넣는다. 확정 조건은 `|측정값 − 공칭무게| ≤ tolerance_g` 이다. 이 값이 없으면 확정하지 않는다. 공칭무게 `weight_g`는 포장지 내용량이다.
 
 ## 2. OCR coverage
 
@@ -202,19 +198,18 @@ DB 토큰 하나의 credit:
 
 상품 점수는 그 상품의 모든 뷰(정면+멀티뷰) coverage 중 최댓값이다. 뷰 토큰을 합쳐 분모를 키우지 않는다.
 
-상품이 매칭된 것으로 세려면 그 점수 ≥ **0.60** 이다. 0.60 이상인 상품이 정확히 하나일 때만 다음 단계로 간다. 없거나 둘 이상이면 REINSERT.
+상품이 매칭된 것으로 세려면 그 점수 ≥ **0.60** 이다. 바코드가 상품을 하나도 가리키지 않을 때만 이 점수로 넘어간다. 0.60 이상인 상품이 정확히 하나일 때 무게 비교로 가고, 없거나 둘 이상이면 REINSERT.
 
 ## 3. 판정
 
 `src/run_db_input_matching.py`
 
 1. 바코드가 DB 상품 **둘 이상** → `BARCODE_MULTIPLE` → REINSERT.
-2. 바코드가 하나이거나 없으면 OCR로 간다.
-3. OCR이 0.60 이상인 상품이 없거나 둘 이상 → `OCR_NO_MATCH` / `OCR_MULTIPLE` → REINSERT.
-4. OCR 상품이 하나이고, 바코드도 하나인데 서로 다르면 → `BARCODE_OCR_CONFLICT` → REINSERT.
-5. `measured_weight_g`가 없으면 그 상품으로 **CONFIRMED**. 있으면 `|측정 − 공칭| ≤ 공칭의 1%`일 때 CONFIRMED, 밖이면 `WEIGHT_OUT_OF_TOLERANCE` → REINSERT.
+2. 바코드가 하나 → OCR과 상관없이 그 상품의 무게를 본다. `|측정 − 공칭| ≤ 공칭의 1%`이면 그 상품으로 **CONFIRMED**. 밖이거나 저울값이 없으면 `WEIGHT_OUT_OF_TOLERANCE` / `WEIGHT_MISSING` → REINSERT.
+3. 바코드가 없으면 OCR로 간다. 0.60 이상인 상품이 없거나 둘 이상 → `OCR_NO_MATCH` / `OCR_MULTIPLE` → REINSERT.
+4. 바코드가 없고 OCR 상품이 하나 → 그 상품으로 2번과 같은 무게 비교를 한다.
 
-바코드만 맞고 OCR이 비면 확정하지 않는다. 바코드가 한 상품을 가리키면 OCR도 그 상품이어야 한다.
+바코드가 한 상품을 가리키면 OCR이 다르거나 비어도 그 바코드 상품의 무게만 본다.
 
 ## 출처
 

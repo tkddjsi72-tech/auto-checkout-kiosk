@@ -219,6 +219,14 @@
     {
       "id": "05",
       "expected_product": "프링글스",
+      "input_image": "IMG_5204.jpg",
+      "state": "바코드-옆면",
+      "source": "data/데이터셋/단일품목/12. 프링글스/바코드-옆면/IMG_5204.jpg",
+      "measured_weight_g": 110
+    },
+    {
+      "id": "05",
+      "expected_product": "프링글스",
       "input_image": "IMG_5206.jpg",
       "state": "바코드-윗면",
       "source": "data/데이터셋/단일품목/12. 프링글스(눕힘)/바코드-윗면/IMG_5206.jpg",

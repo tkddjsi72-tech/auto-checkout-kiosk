@@ -16,7 +16,8 @@ and barcode detection in this entry point uses CUDA.
    product's nominal weight. OCR does not change that decision.
    No barcode product uses OCR. OCR must name exactly one product, and that
    product's weight must pass the same 1% check.
-   Undecoded barcode boxes can recover a DB code from overlapping OCR digits.
+   A barcode box with no DB code can recover one from overlapping OCR digits.
+   A decoded number that is not in the product DB counts as no code.
 """
 
 from __future__ import annotations

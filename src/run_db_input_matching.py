@@ -3,7 +3,8 @@
 
 Decision policy:
   1. Laura barcode detection and PaddleOCR are independent of the manifest label.
-  2. Undecoded Laura boxes can take a DB barcode from overlapping OCR digits.
+  2. A Laura box with no product-DB barcode can take one from overlapping OCR digits.
+     That includes a box whose decoded number is absent from the DB.
   3. Two or more barcode products -> REINSERT.
   4. One barcode product -> weight check against that product. OCR is ignored.
   5. No barcode product -> OCR. Zero or two-plus OCR products -> REINSERT.
@@ -585,19 +586,24 @@ def apply_ocr_digit_barcode_fallback(
     ocr_boxes: list[dict[str, Any]],
     known_barcodes: set[str],
 ) -> list[dict[str, str]]:
-    """Fill undecoded Laura boxes using OCR digits whose bbox overlaps the barcode box.
+    """Fill Laura boxes that have no product-DB barcode.
 
+    A decoded number that is not in the product DB does not count as a read.
     Gate:
       1) at least one Laura barcode detection exists (caller responsibility)
-      2) OCR text bbox overlaps that detection's xyxy
-      3) recovered digits match a known DB barcode
+      2) the box is undecoded, or every decoded number is absent from the DB
+      3) OCR text bbox overlaps that detection's xyxy
+      4) recovered digits match a known DB barcode
     """
     if not detections or not ocr_boxes or not known_barcodes:
         return []
 
     recovered: list[dict[str, str]] = []
     for detection in detections:
-        if detection.get("decoded"):
+        if any(
+            normalize_barcode_text(str(item.get("code") or "")) in known_barcodes
+            for item in detection.get("decoded") or []
+        ):
             continue
         xyxy = detection.get("xyxy") or []
         if len(xyxy) != 4:
@@ -1043,7 +1049,7 @@ def main() -> int:
             "ocr_element_fuzzy_threshold": args.element_threshold,
             "ocr_product_coverage_threshold": args.coverage_threshold,
             "weight_source": "manifest measured_weight_g; required to confirm",
-            "ocr_digit_fallback": "undecoded Laura box + overlapping OCR digits in the product DB",
+            "ocr_digit_fallback": "Laura box with no DB barcode + overlapping OCR digits in the product DB",
         },
         "summary": {
             "image_count": len(results),

@@ -33,7 +33,7 @@ python3 run_identification.py \
   --output-dir output/full_identification
 ```
 
-멀티뷰 사진 29장:
+멀티뷰 사진 30장:
 
 ```bash
 python3 run_identification.py \
@@ -77,10 +77,10 @@ python3 run_identification.py \
 | 입력 | 장수 | CONFIRMED | 재투입 | 정답 일치 |
 |---|---:|---:|---:|---:|
 | 정면 | 11 | 11 | 0 | 11 |
-| 멀티뷰 | 29 | 19 | 10 | 19 |
+| 멀티뷰 | 30 | 20 | 10 | 20 |
 | 여러 상품 | 7 | 0 | 7 | — |
 
-확정된 상품이 정답과 다른 경우는 없다. 멀티뷰 재투입 10장은 바코드가 없고 OCR도 0.60을 넘지 못했다. 여러 상품은 바코드가 둘 이상이거나, 하나만 읽혀도 합산 무게가 그 상품과 달라 재투입이다. 정답 일치는 `expected_products` 목록이라 매기지 않았다.
+확정된 상품이 정답과 다른 경우는 없다. 멀티뷰 재투입 10장은 DB 바코드가 없고 OCR도 0.60을 넘지 못했다. `IMG_5198.jpg` 오뚜기컵밥은 잘못 읽힌 번호가 DB에 없어서, 같은 박스의 OCR 숫자 `8801045892238`로 확정했다. 여러 상품은 바코드가 둘 이상이거나, 하나만 읽혀도 합산 무게가 그 상품과 달라 재투입이다. 정답 일치는 `expected_products` 목록이라 매기지 않았다.
 
 ## 폴더
 
@@ -88,7 +88,7 @@ python3 run_identification.py \
 |---|---|
 | `run_identification.py` | 검출, OCR 세 갈래, 판정을 순서대로 실행 |
 | `dataset/single_front` | 상품 1개, 정면 11장 |
-| `dataset/single_multiview` | 상품 1개, 윗면·아랫면·옆면 29장 |
+| `dataset/single_multiview` | 상품 1개, 윗면·아랫면·옆면 30장 |
 | `dataset/multiple` | 한 사진에 상품이 여러 개인 입력 |
 | `db/products.json` | 바코드, 공칭 무게, 허용 오차 1% |
 | `db/text_front`, `db/text_multiview` | 뷰별 문구. 뷰 토큰은 합치지 않는다 |
@@ -153,7 +153,7 @@ python3 run_identification.py \
 
 디코드는 크롭을 색/회색/CLAHE/샤픈으로 만들고, 배율 1–3배, 0/90/180/270도 회전을 돌린다. 채택 조건은 EAN-13 체크섬이 맞거나, 숫자 12–14자다. 짧은 오검출은 버린다. DB에 없는 번호는 상품 매칭에 넣지 않는다.
 
-박스의 번호를 못 읽으면, 그 박스와 겹치는 OCR 글자에서 DB에 있는 바코드 숫자를 찾아 넣는다. 겹치는 OCR 숫자가 없거나 DB에 없는 번호면 복구하지 않는다.
+박스에서 DB에 있는 번호가 안 나오면, 그 박스와 겹치는 OCR 글자에서 DB 바코드를 찾아 넣는다. 번호를 못 읽은 경우와, 읽었지만 그 번호가 DB에 없는 경우가 같다. 겹치는 OCR 숫자가 DB에 없으면 복구하지 않는다.
 
 ### OCR
 
